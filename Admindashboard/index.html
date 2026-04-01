@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- estilos css -->
+    <link rel="stylesheet" href="estilos.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <section>
+        <!-- Menu -->
+        <div class="nav">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icono"><ion-icon name="aperture-outline"></ion-icon></span>
+                        <span class="titulo">Logo</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icono"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="titulo">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icono"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="titulo">Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icono"><ion-icon name="cart-outline"></ion-icon></span>
+                        <span class="titulo">ventas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icono"><ion-icon name="help-circle-outline"></ion-icon></span>
+                        <span class="titulo">ayuda</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icono"><ion-icon name="settings-outline"></ion-icon></span>
+                        <span class="titulo">configuración</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icono"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span class="titulo">cerrar sesión</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- fin menu -->
+
+        <!-- Dashboard -->
+        <div class="container">
+            <!-- Barra superior -->
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu"></ion-icon>
+                </div>
+                <div class="buscar">
+                    <label for="">
+                        <input type="text" placeholder="buscar..." name="" id="">
+                        <ion-icon name="search"></ion-icon>
+                    </label>
+                </div>
+                <div class="perfil-usuario">
+                    <img src="1.jpg" alt="">
+                </div>
+            </div>
+            <!--fin barra superior-->
+
+            <!--cards-->
+            <div class="cards">
+                <div class="card">
+                    <div>
+                        <span class="card-numeros">2,345</span>
+                        <span class="card-nombre">visitas</span>
+                    </div>
+                    <div class="card-icono">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <span class="card-numeros">1,342</span>
+                        <span class="card-nombre">ventas</span>
+                    </div>
+                    <div class="card-icono">
+                        <ion-icon name="cart-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <span class="card-numeros">475</span>
+                        <span class="card-nombre">mensajes</span>
+                    </div>
+                    <div class="card-icono">
+                        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <span class="card-numeros">$6,879</span>
+                        <span class="card-nombre">ganancias</span>
+                    </div>
+                    <div class="card-icono">
+                        <ion-icon name="trending-up-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+            <!--fin cards-->
+
+            <!--detalles-->
+            <div class="detalles">
+                <!--ordenes recientes-->
+                <div class="orden-reciente">
+                    <div class="header">
+                        <h2>Ordenes Recientes</h2>
+                        <a href="#" class="boton">Ver todos</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Pago</th>
+                            <th>Estatus</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Laptop Hp</td>
+                                <td>$1,299.99</td>
+                                <td>Pendiente</td>
+                                <td><span class="status pendiente">Pendiente</span></td>
+                            </tr>
+                            <tr>
+                                <td>Air Pods</td>
+                                <td>$89.00</td>
+                                <td>Pagado</td>
+                                <td><span class="status devuelto">Devuelto</span></td>
+                            </tr>
+                            <tr>
+                                <td>PC Dell</td>
+                                <td>$700.00</td>
+                                <td>Pendiente</td>
+                                <td><span class="status en-progreso">En Progreso</span></td>
+                            </tr>
+                            <tr>
+                                <td>Monitor Samsung</td>
+                                <td>$199.99</td>
+                                <td>Pagado</td>
+                                <td><span class="status entregado">Entregado</span></td>
+                            </tr>
+                            <tr>
+                                <td>Webcam</td>
+                                <td>$49.99</td>
+                                <td>Pendiente</td>
+                                <td><span class="status pendiente">Pendiente</span></td>
+                            </tr>
+                            <tr>
+                                <td>audifonos</td>
+                                <td>$29.99</td>
+                                <td>Pendiente</td>
+                                <td><span class="status devuelto">Devuelto</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--fin de ordenes recientes-->
+
+                <!--nuevos clientes-->
+
+                <div class="nuevos-clientes">
+                    <div class="header">
+                        <h2>Nuevos Clientes</h2>
+                    </div>
+                    <table>
+                        <tr>
+                            <td><div class="imgbox"><img src="2.jpg" alt=""></div></td>
+                            <td><h4>John Doe</h4></td>
+                            <td>
+                                <a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><ion-icon name="mail"></ion-icon></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><img src="3.jpg" alt=""></div></td>
+                            <td><h4>Olivia Anderson</h4></td>
+                            <td>
+                                <a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><ion-icon name="mail"></ion-icon></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><img src="4.jpg" alt=""></div></td>
+                            <td><h4>Emma Wilson</h4></td>
+                            <td>
+                                <a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><ion-icon name="mail"></ion-icon></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><img src="5.jpg" alt=""></div></td>
+                            <td><h4>James Brown</h4></td>
+                            <td>
+                                <a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><ion-icon name="mail"></ion-icon></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><img src="6.jpg" alt=""></div></td>
+                            <td><h4>Rosie Johnson</h4></td>
+                            <td>
+                                <a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><ion-icon name="mail"></ion-icon></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><img src="7.jpg" alt=""></div></td>
+                            <td><h4>Jhonatan Doll</h4></td>
+                            <td>
+                                <a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><a href="#"><ion-icon name="chatbubbles"></ion-icon></a>
+                                <a href="#"><ion-icon name="mail"></ion-icon></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!--fin nuevos clientes-->
+            </div>
+            <!--fin detalles-->
+        </div>
+        <!--fin dashboard-->
+    </section>
+
+    <!--scripts libreria de iconos-->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- scripts js-->
+    <script src="index.js"></script>
+</body>
+</html>
