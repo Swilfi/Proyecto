@@ -36,7 +36,7 @@ section {
     height: 100%;
     background: var(--purple);
     border-left: 10px solid var(--purple);
-    overflow: hidden;
+    overflow: auto;
     transition: 0.4s;
 }
 
@@ -45,7 +45,7 @@ section {
 }
 
 .nav ul {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -53,7 +53,7 @@ section {
 
 .nav ul li {
     position: relative;
-    width: 200%;
+    width: 100%;
     list-style: none;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -103,6 +103,85 @@ section {
     text-align: start;
     white-space: nowrap;
 }
+
+.nav ul li.has-submenu > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav ul li .arrow {
+    margin-left: auto;
+    font-size: 0.9em;
+    transition: transform 0.3s ease;
+}
+
+.nav ul li.has-submenu.open .arrow {
+    transform: rotate(-180deg);
+}
+
+.nav ul li .submenu {
+    display: none;
+    flex-direction: column;
+    padding-left: 20px;
+    margin: 0;
+    background: transparent;
+}
+
+.nav ul li.has-submenu.open .submenu {
+    display: flex;
+}
+
+.nav ul li .submenu li {
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav ul li .submenu li a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 28px;
+    padding: 0 8px;
+    color: var(--white);
+    text-decoration: none;
+    cursor: pointer;
+    background: var(--purple);
+    font-size: 0.85em;
+}
+
+.nav ul li .submenu li a .icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    color: inherit;
+    margin-right: 5px;
+}
+
+.nav ul li .submenu li a .icono ion-icon {
+    font-size: 1em;
+}
+
+.nav ul li .submenu li a .titulo {
+    display: inline-block;
+    color: inherit;
+    white-space: nowrap;
+}
+
+.nav ul li .submenu li a:hover {
+    background: var(--white) !important;
+    color: var(--purple) !important;
+}
+
+.nav ul li .submenu li a:hover .icono,
+.nav ul li .submenu li a:hover .titulo {
+    color: var(--purple) !important;
+    fill: var(--purple) !important;
+}
+
 
 /* dashboard */
 
