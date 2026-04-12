@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Cuarto Grado</title>
+</head>
+<body>
+    
+    <center>
+    <!--detalles-->
+            <div class="detalles">
+                <!--ordenes recientes-->
+                <div class="orden-reciente">
+                    <div class="header">
+                        <h2>Estudiantes Cuarto Grado</h2>
+                        <div>
+                            <a href="../index.html" class="boton">Volver</a>
+                            <a href="#" class="boton">Ver todos</a>
+                        </div>
+                    </div>
+                    <div class="filter-bar">
+                        <button type="button" class="boton" id="filterToggle">Filtro</button>
+                        <div class="filter-options" id="filterOptions">
+                            <button type="button" class="boton filter-option" data-sort="cedula">Cédula</button>
+                            <button type="button" class="boton filter-option" data-sort="nombre">Nombre</button>
+                            <button type="button" class="boton filter-option" data-sort="apellido">Apellido</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Seccion</th>
+                                <th>Año Escolar</th>
+                                <th>Cedula Representante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Andres Efrain</td>
+                                <td>Garcia Lopez</td>
+                                <td>A</td>
+                                <td>2023-2024</td>
+                                <td>123456789</td>
+                            </tr>
+                            <tr>
+                                <td>Julio Cesar</td>
+                                <td>Garcia Alcala</td>
+                                <td>B</td>
+                                <td>2023-2024</td>
+                                <td>987654321</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                <!--fin de ordenes recientes-->
+    </center>
+    <script src="script.js"></script>
+</body>
+</html>

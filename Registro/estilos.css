@@ -1,0 +1,290 @@
+.registro-form .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .registro-form .field label {
+            font-size: 0.95rem;
+            color: #4b5b65;
+        }
+
+        .registro-form .field input,
+        .registro-form .field select {
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid #dfe7eb;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: #fff;
+            color: #1f2d34;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .toggle-button {
+            padding: 8px 16px;
+            border: 1px solid #dfe7eb;
+            border-radius: 12px;
+            background: #fff;
+            color: #1f2d34;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .toggle-button.active {
+            background: #3aa8ad;
+            color: #fff;
+            border-color: #3aa8ad;
+        }
+
+        .toggle-button:hover {
+            background: #e0f4f5;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: #1f2d34;
+        }
+
+        .radio-group input {
+            accent-color: #3aa8ad;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .help-text {
+            margin: 0;
+            color: #4b5b65;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        :root {
+            --bg: #f5f8fb;
+            --white: #ffffff;
+            --primary: #3aa8ad;
+            --primary-soft: #daf1f2;
+            --text: #1f2d34;
+            --border: #dfe7eb;
+            --shadow: 0 18px 50px rgba(34, 60, 80, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            width: min(1080px, calc(100% - 32px));
+            margin: 32px auto;
+            padding: 24px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 2.5vw, 2.8rem);
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            margin: 12px auto 0;
+            max-width: 640px;
+            color: #4b5b65;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .selector {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .check-button {
+            border: 2px solid var(--primary);
+            background: var(--white);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            min-width: 130px;
+        }
+
+        .check-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 22px rgba(58, 168, 173, 0.12);
+        }
+
+        .check-button.active {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 16px 30px rgba(58, 168, 173, 0.2);
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--primary-soft);
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--text);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .registro-form {
+            padding: 22px 24px;
+            display: grid;
+            gap: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .registro-form .fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 0.95rem;
+            color: #4b5b65;
+        }
+
+        .field input {
+            height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0 12px;
+            font-size: 0.95rem;
+            background: #fff;
+            color: var(--text);
+        }
+
+        .field input:focus {
+            outline: 2px solid rgba(58, 168, 173, 0.35);
+            border-color: rgba(58, 168, 173, 0.6);
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .form-actions button {
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-actions button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 22px rgba(58, 168, 173, 0.14);
+        }
+
+        @media (max-width: 760px) {
+            .registro-form .fields {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 560px;
+        }
+
+        thead {
+            background: #eef7f7;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 700;
+            color: #1d3f44;
+            font-size: 0.95rem;
+        }
+
+        tbody tr:hover {
+            background: #f7fcfc;
+        }
+
+        .no-data {
+            padding: 24px;
+            color: #5d6d73;
+            text-align: center;
+        }
+
+        @media (max-width: 680px) {
+            .selector {
+                gap: 8px;
+            }
+
+            .check-button {
+                min-width: 100px;
+                padding: 10px 14px;
+            }
+
+            th,
+            td {
+                padding: 12px 10px;
+            }
+        }

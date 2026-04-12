@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Registro</title>
+    
+</head>
+<body>
+    <div class="container">
+        <section class="hero">
+            <h1>Bienvenido</h1>
+            <p>Por favor seleccione la persona a registrar:</p>
+        </section>
+
+        <div class="selector">
+            <button type="button" class="check-button active" data-person="estudiante">Estudiante</button>
+            <button type="button" class="check-button" data-person="representante">Representante</button>
+            <button type="button" class="check-button" data-person="profesor">Profesor</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 id="registroTitle">Registro: Estudiante</h2>
+            </div>
+            <form id="registroForm" class="registro-form">
+                <div class="fields" id="formFields"></div>
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='../Admindashboard/index.html'">Volver</button>
+                    <button type="submit">Registrar</button>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table>
+                    <thead id="registroHead"></thead>
+                    <tbody id="registroBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>

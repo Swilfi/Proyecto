@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --white: #fff6ff;
+    --purple: #3aa8ad;
+    --dark-rose: #a586ae;
+    --black: #221824;
+    --font: 'Montserrat', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font);
+}
+
+body {
+    background-color: var(--white);
+    color: var(--black);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.detalles {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.detalles .orden-reciente {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.header h2 {
+    font-weight: 700;
+    color: var(--purple);
+}
+
+.boton {
+    display: inline-block;
+    padding: 5px 10px;
+    background: var(--purple);
+    color: var(--white);
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.detalles table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.detalles .orden-reciente table thead th,
+.detalles .orden-reciente table tr td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detalles .orden-reciente table thead th {
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: var(--black);
+    opacity: 0.8;
+}
+
+.detalles .orden-reciente table tr:hover {
+    background: var(--purple);
+    color: var(--white);
+}
+
+.detalles .orden-reciente table th:last-child,
+.detalles .orden-reciente table tr td:last-child {
+    text-align: end;
+}
+
+.detalles .orden-reciente table th:nth-child(3),
+.detalles .orden-reciente table tr td:nth-child(3) {
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    body {
+        padding: 10px;
+    }
+}
+
+.filter-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin: 16px 0 0;
+}
+
+.filter-options {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.filter-options.visible {
+    display: flex;
+}
+
+.filter-option {
+    min-width: 140px;
+}
