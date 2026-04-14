@@ -131,7 +131,7 @@ body {
 }
 
 .field input, 
-.field select {  /* <-- Añade esto aquí */
+.field select {
     height: 42px;
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -139,7 +139,7 @@ body {
     font-size: 0.95rem;
     background: #fff;
     color: var(--text);
-    appearance: none; /* Opcional: para un look más limpio en algunos navegadores */
+    transition: var(--transition);
 }
 
 .field input:focus,
