@@ -1,290 +1,258 @@
-.registro-form .field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+/* 1. Definición de Variables (Consolidadas) */
+:root {
+    --bg: #f5f8fb;
+    --white: #ffffff;
+    --primary: #3aa8ad;
+    --primary-soft: #daf1f2;
+    --text: #1f2d34;
+    --text-muted: #4b5b65;
+    --border: #dfe7eb;
+    --shadow: 0 18px 50px rgba(34, 60, 80, 0.08);
+    --transition: all 0.2s ease;
+}
 
-        .registro-form .field label {
-            font-size: 0.95rem;
-            color: #4b5b65;
-        }
+/* 2. Reset y Estilos Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        .registro-form .field input,
-        .registro-form .field select {
-            height: 42px;
-            padding: 0 12px;
-            border: 1px solid #dfe7eb;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            background: #fff;
-            color: #1f2d34;
-        }
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
 
-        .radio-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
+/* 3. Layout y Contenedores */
+.container {
+    width: min(1080px, calc(100% - 32px));
+    margin: 32px auto;
+    padding: 24px;
+}
 
-        .toggle-button {
-            padding: 8px 16px;
-            border: 1px solid #dfe7eb;
-            border-radius: 12px;
-            background: #fff;
-            color: #1f2d34;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: background 0.2s, color 0.2s;
-        }
+.hero {
+    text-align: center;
+    margin-bottom: 24px;
+}
 
-        .toggle-button.active {
-            background: #3aa8ad;
-            color: #fff;
-            border-color: #3aa8ad;
-        }
+.hero h1 {
+    font-size: clamp(2rem, 2.5vw, 2.8rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+}
 
-        .toggle-button:hover {
-            background: #e0f4f5;
-        }
+.hero p {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--text-muted);
+}
 
-        .radio-group label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            color: #1f2d34;
-        }
+/* 4. Selectores y Botones de Acción */
+.selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
 
-        .radio-group input {
-            accent-color: #3aa8ad;
-        }
+.check-button {
+    border: 2px solid var(--primary);
+    background: var(--white);
+    color: var(--primary);
+    padding: 12px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.95rem;
+    min-width: 130px;
+}
 
-        .hidden {
-            display: none;
-        }
+.check-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(58, 168, 173, 0.12);
+}
 
-        .help-text {
-            margin: 0;
-            color: #4b5b65;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        :root {
-            --bg: #f5f8fb;
-            --white: #ffffff;
-            --primary: #3aa8ad;
-            --primary-soft: #daf1f2;
-            --text: #1f2d34;
-            --border: #dfe7eb;
-            --shadow: 0 18px 50px rgba(34, 60, 80, 0.08);
-        }
+.check-button.active {
+    background: var(--primary);
+    color: var(--white);
+    box-shadow: 0 16px 30px rgba(58, 168, 173, 0.2);
+}
 
-        * {
-            box-sizing: border-box;
-        }
+/* 5. Tarjeta y Formulario */
+.card {
+    background: var(--white);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
+.card-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--primary-soft);
+}
 
-        .container {
-            width: min(1080px, calc(100% - 32px));
-            margin: 32px auto;
-            padding: 24px;
-        }
+.card-header h2 {
+    font-size: 1.2rem;
+    color: var(--text);
+}
 
-        .hero {
-            text-align: center;
-            margin-bottom: 24px;
-        }
+.registro-form {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+}
 
-        .hero h1 {
-            margin: 0;
-            font-size: clamp(2rem, 2.5vw, 2.8rem);
-            letter-spacing: -0.03em;
-        }
+/* GRID DEL FORMULARIO */
+.fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
 
-        .hero p {
-            margin: 12px auto 0;
-            max-width: 640px;
-            color: #4b5b65;
-            line-height: 1.6;
-            font-size: 1rem;
-        }
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
 
-        .selector {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
+.field-full {
+    grid-column: 1 / -1; /* Ocupa todo el ancho */
+    margin-bottom: 8px;
+}
 
-        .check-button {
-            border: 2px solid var(--primary);
-            background: var(--white);
-            color: var(--primary);
-            padding: 12px 20px;
-            border-radius: 999px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
-            min-width: 130px;
-        }
+.field label {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
 
-        .check-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 22px rgba(58, 168, 173, 0.12);
-        }
+.field input, 
+.field select {  /* <-- Añade esto aquí */
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    background: #fff;
+    color: var(--text);
+    appearance: none; /* Opcional: para un look más limpio en algunos navegadores */
+}
 
-        .check-button.active {
-            background: var(--primary);
-            color: var(--white);
-            box-shadow: 0 16px 30px rgba(58, 168, 173, 0.2);
-        }
+.field input:focus,
+.field select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
 
-        .card {
-            background: var(--white);
-            border-radius: 22px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
+/* 6. Radio Groups y Toggles */
+.radio-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
 
-        .card-header {
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-            background: var(--primary-soft);
-        }
+.toggle-button {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
 
-        .card-header h2 {
-            margin: 0;
-            font-size: 1.2rem;
-            color: var(--text);
-        }
+.toggle-button.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
 
-        .table-responsive {
-            overflow-x: auto;
-        }
+.toggle-button:hover:not(.active) {
+    background: #e0f4f5;
+}
 
-        .registro-form {
-            padding: 22px 24px;
-            display: grid;
-            gap: 16px;
-            border-bottom: 1px solid var(--border);
-        }
+/* 7. Tablas y Utilidades */
+.table-responsive {
+    overflow-x: auto;
+}
 
-        .registro-form .fields {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+}
 
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+thead {
+    background: #f8fafb;
+}
 
-        .field label {
-            font-size: 0.95rem;
-            color: #4b5b65;
-        }
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
 
-        .field input {
-            height: 42px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 0 12px;
-            font-size: 0.95rem;
-            background: #fff;
-            color: var(--text);
-        }
+th {
+    font-weight: 700;
+    color: #1d3f44;
+}
 
-        .field input:focus {
-            outline: 2px solid rgba(58, 168, 173, 0.35);
-            border-color: rgba(58, 168, 173, 0.6);
-        }
+.form-actions {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
 
-        .form-actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 12px;
-        }
+.form-actions button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition);
+}
 
-        .form-actions button {
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+.form-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(58, 168, 173, 0.14);
+}
 
-        .form-actions button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 22px rgba(58, 168, 173, 0.14);
-        }
+.hidden {
+    display: none !important;
+}
 
-        @media (max-width: 760px) {
-            .registro-form .fields {
-                grid-template-columns: 1fr;
-            }
-        }
+/* 8. Responsividad */
+@media (max-width: 760px) {
+    .fields {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        margin: 16px auto;
+        padding: 12px;
+    }
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 560px;
-        }
+/* Cuando el input es inválido y el usuario ya terminó de escribir */
+.field input:placeholder-shown {
+    border-color: var(--border);
+}
 
-        thead {
-            background: #eef7f7;
-        }
+.field input:not(:placeholder-shown):invalid {
+    border-color: #ef4444; /* Rojo error */
+    background-color: #fef2f2;
+}
 
-        th,
-        td {
-            padding: 14px 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            font-weight: 700;
-            color: #1d3f44;
-            font-size: 0.95rem;
-        }
-
-        tbody tr:hover {
-            background: #f7fcfc;
-        }
-
-        .no-data {
-            padding: 24px;
-            color: #5d6d73;
-            text-align: center;
-        }
-
-        @media (max-width: 680px) {
-            .selector {
-                gap: 8px;
-            }
-
-            .check-button {
-                min-width: 100px;
-                padding: 10px 14px;
-            }
-
-            th,
-            td {
-                padding: 12px 10px;
-            }
-        }
+.field input:not(:placeholder-shown):valid {
+    border-color: #10b981; /* Verde éxito */
+}
