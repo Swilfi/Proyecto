@@ -1,17 +1,18 @@
+const API_BASE = 'http://localhost:3000/api';
+
 const registroData = {
     estudiante: {
         title: 'Registro: Estudiante',
-        headers: ['Cédula / Rep.', 'Nombre', 'Apellido', 'Año Escolar', 'Sección', 'Grado'],
+        headers: ['Cédula / Rep.', 'Nombre', 'Apellido', 'Fecha de Nac.', 'Dirección'],
         fields: [
             { name: 'nombre', label: 'Nombre', type: 'text' },
             { name: 'apellido', label: 'Apellido', type: 'text' },
-            { name: 'ano', label: 'Año Escolar', type: 'text' },
-            { name: 'seccion', label: 'Sección', type: 'text' },
-            { name: 'grado', label: 'Grado', type: 'text' }
+            { name: 'fecha_nacimiento', label: 'Fecha de Nacimiento', type: 'date' },
+            { name: 'direccion', label: 'Dirección', type: 'text' }
         ],
         rows: [
-            ['V12345678', 'Andrés', 'García', '2023-2024', 'A', '1°'],
-            ['V98765432', 'María', 'López', '2023-2024', 'B', '1°']
+            ['V12345678', 'Andrés', 'García', '2009-05-12', 'Av. Central 1'],
+            ['V98765432', 'María', 'López', '2010-08-21', 'Calle Falsa 123']
         ]
     },
     representante: {
@@ -30,20 +31,25 @@ const registroData = {
     },
     profesor: {
         title: 'Registro: Profesor',
-        headers: ['Cédula', 'Nombre', 'Apellido', 'Grado Asignado', 'Cargo', 'Teléfono'],
+        headers: ['Cédula', 'Nombre', 'Apellido', 'Email', 'Teléfono', 'Cargo', 'Grado', 'Sección'],
         fields: [
             { name: 'cedula', label: 'Cédula', type: 'text' },
             { name: 'nombre', label: 'Nombre', type: 'text' },
             { name: 'apellido', label: 'Apellido', type: 'text' },
+            { name: 'email', label: 'Email', type: 'text' },
+            { name: 'telefono', label: 'Teléfono', type: 'text' },
             { name: 'cargo', label: 'Cargo', type: 'select' },
-            { name: 'grado', label: 'Grado Asignado', type: 'select' },
-            { name: 'telefono', label: 'Teléfono', type: 'text' }
+            { name: 'grado', label: 'Grado', type: 'select' },
+            { name: 'seccion', label: 'Sección', type: 'select' }
         ],
         rows: [
-            ['V15678912', 'Carlos', 'Ramírez', '1°', 'Docente', '04122345678']
+            ['V15678912', 'Carlos', 'Ramírez', 'carlos@colegio.com', '04122345678', 'Docente', '1°', 'A']
         ]
     }
 };
+
+const opcionesGrado = ['1°', '2°', '3°', '4°', '5°', '6°'];
+const opcionesSeccion = ['A', 'B', 'C'];
 
 // --- VALIDACIONES EN TIEMPO REAL ---
 document.addEventListener('input', (e) => {
@@ -77,16 +83,25 @@ document.addEventListener('input', (e) => {
 // --- FUNCIONES DE CONTROL VISUAL ---
 function toggleGradoAsignado(selectElement) {
     const wrapperGrado = document.getElementById('wrapper-grado-asignado');
+    const wrapperSeccion = document.getElementById('wrapper-seccion-asignado');
     const inputGrado = document.getElementById('grado');
+    const inputSeccion = document.getElementById('seccion');
 
     if (selectElement.value === 'Docente') {
         wrapperGrado.classList.remove('hidden');
+        wrapperSeccion.classList.remove('hidden');
         if (inputGrado) inputGrado.required = true;
+        if (inputSeccion) inputSeccion.required = true;
     } else {
         wrapperGrado.classList.add('hidden');
+        wrapperSeccion.classList.add('hidden');
         if (inputGrado) {
             inputGrado.required = false;
             inputGrado.value = "";
+        }
+        if (inputSeccion) {
+            inputSeccion.required = false;
+            inputSeccion.value = "";
         }
     }
 }
@@ -120,17 +135,66 @@ const buttons = document.querySelectorAll('.check-button');
 let currentType = 'estudiante';
 let estudianteConCedula = true;
 
+let currentRows = [];
+
 function renderTable(type) {
     const data = registroData[type];
+    const rows = currentRows.length ? currentRows : data.rows;
+
     registroTitle.textContent = data.title;
     registroHead.innerHTML = '<tr>' + data.headers.map(header => `<th>${header}</th>`).join('') + '</tr>';
-    registroBody.innerHTML = data.rows.map(row => '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>').join('');
+    registroBody.innerHTML = rows.map(row => '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>').join('');
+}
+
+async function fetchRegistroRows(type) {
+    try {
+        if (type === 'estudiante') {
+            const response = await fetch(`${API_BASE}/estudiantes`);
+            const estudiantes = await response.json();
+            return estudiantes.map(est => [
+                est.cedula_escolar || `Rep: ${est.cedula_rep || 'Sin representante'}`,
+                est.nombre,
+                est.apellido,
+                est.fecha_nacimiento || 'N/A',
+                est.direccion || 'N/A'
+            ]);
+        }
+
+        if (type === 'representante') {
+            const response = await fetch(`${API_BASE}/representantes`);
+            const reps = await response.json();
+            return reps.map(rep => [rep.cedula, rep.nombre, rep.apellido, rep.telefono, rep.direccion]);
+        }
+
+        if (type === 'profesor') {
+            const response = await fetch(`${API_BASE}/profesores`);
+            const profs = await response.json();
+            return profs.map(prof => [
+                prof.cedula,
+                prof.nombre,
+                prof.apellido,
+                prof.email || 'N/A',
+                prof.telefono || 'N/A',
+                prof.cargo_nombre || 'N/A',
+                prof.grado_num ? `${prof.grado_num}°` : 'N/A',
+                prof.seccion_num ? String.fromCharCode(64 + prof.seccion_num) : 'N/A'
+            ]);
+        }
+
+        return [];
+    } catch (error) {
+        console.error('Error cargando registros:', error);
+        return [];
+    }
+}
+
+async function loadRegistroTable(type) {
+    currentRows = await fetchRegistroRows(type);
+    renderTable(type);
 }
 
 function renderForm(type) {
     const data = registroData[type];
-    const opcionesGrado = ['1°', '2°', '3°', '4°', '5°', '6°'];
-    const opcionesSeccion = ['A', 'B', 'C'];
     const opcionesCargo = ['Administrativo', 'Obrero', 'Docente'];
 
     if (type === 'estudiante') {
@@ -151,31 +215,32 @@ function renderForm(type) {
                 <input id="cedula_representante" name="cedula_representante" type="text" placeholder="Ej: V87654321">
             </div>
             ${data.fields.map(field => {
-                if (field.name === 'grado') {
-                    return `<div class="field"><label>Grado</label><select id="grado" name="grado" required><option value="" disabled selected>Seleccione</option>${opcionesGrado.map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>`;
-                }
-                if (field.name === 'seccion') {
-                    return `<div class="field"><label>Sección</label><select id="seccion" name="seccion" required><option value="" disabled selected>Seleccione</option>${opcionesSeccion.map(s => `<option value="${s}">${s}</option>`).join('')}</select></div>`;
-                }
-                return `<div class="field"><label>${field.label}</label><input id="${field.name}" name="${field.name}" type="text" placeholder="Ingrese ${field.label.toLowerCase()}" required></div>`;
+                const inputType = field.type === 'date' ? 'date' : 'text';
+                return `<div class="field"><label>${field.label}</label><input id="${field.name}" name="${field.name}" type="${inputType}" placeholder="Ingrese ${field.label.toLowerCase()}" required></div>`;
             }).join('')}
         `;
         setupCedulaToggleEvents();
     } else {
         formFields.innerHTML = data.fields.map(field => {
-            let extraClass = field.name === 'direccion' ? 'field-full' : '';
+            let extraClass = (field.name === 'email' || field.name === 'seccion') ? 'field-full' : '';
             
-            if (field.name === 'cargo') {
-                return `<div class="field"><label>Cargo</label><select id="cargo" name="cargo" onchange="toggleGradoAsignado(this)" required><option value="" disabled selected>Seleccione</option>${opcionesCargo.map(c => `<option value="${c}">${c}</option>`).join('')}</select></div>`;
-            }
-            if (field.name === 'grado') {
-                return `<div id="wrapper-grado-asignado" class="field hidden"><label>Grado Asignado</label><select id="grado" name="grado"><option value="" disabled selected>Seleccione</option>${opcionesGrado.map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>`;
+            if (field.type === 'select') {
+                if (field.name === 'cargo') {
+                    return `<div class="field"><label>Cargo</label><select id="cargo" name="cargo" onchange="toggleGradoAsignado(this)" required><option value="" disabled selected>Seleccione</option>${opcionesCargo.map(c => `<option value="${c}">${c}</option>`).join('')}</select></div>`;
+                }
+                if (field.name === 'grado') {
+                    return `<div id="wrapper-grado-asignado" class="field hidden"><label>Grado Asignado</label><select id="grado" name="grado"><option value="" disabled selected>Seleccione</option>${opcionesGrado.map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>`;
+                }
+                if (field.name === 'seccion') {
+                    return `<div id="wrapper-seccion-asignado" class="field hidden"><label>Sección Asignada</label><select id="seccion" name="seccion"><option value="" disabled selected>Seleccione</option>${opcionesSeccion.map(s => `<option value="${s}">${s}</option>`).join('')}</select></div>`;
+                }
             }
 
             let pattern = field.name === 'cedula' ? '^[VEJP][0-9]{7,9}$' : (field.name === 'telefono' ? '[0-9]{10,11}' : '');
             let placeholder = field.name === 'cedula' ? 'Ej: V12345678' : `Ingrese ${field.label.toLowerCase()}`;
+            const inputType = field.name === 'email' ? 'email' : 'text';
 
-            return `<div class="field ${extraClass}"><label>${field.label}</label><input id="${field.name}" name="${field.name}" type="text" placeholder="${placeholder}" ${pattern ? `pattern="${pattern}"` : ''} required></div>`;
+            return `<div class="field ${extraClass}"><label>${field.label}</label><input id="${field.name}" name="${field.name}" type="${inputType}" placeholder="${placeholder}" ${pattern ? `pattern="${pattern}"` : ''} required></div>`;
         }).join('');
     }
 }
@@ -193,41 +258,98 @@ function setupCedulaToggleEvents() {
     updateCedulaVisibility();
 }
 
-function selectPerson(type, button) {
+async function selectPerson(type, button) {
     currentType = type;
     buttons.forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
-    renderTable(type);
     renderForm(type);
+    await loadRegistroTable(type);
+}
+
+async function sendRegistration(endpoint, payload) {
+    try {
+    const response = await fetch(`${API_BASE}/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+    if (!response.ok) {
+        throw new Error(result.error || 'Error en el servidor');
+    }
+
+    return result;
+    } catch (error) {
+    console.error(error);
+    throw error;
+    }
 }
 
 // --- EVENTO SUBMIT ---
-registroForm.addEventListener('submit', event => {
+registroForm.addEventListener('submit', async event => {
     event.preventDefault();
     const data = registroData[currentType];
+    let payload = {};
     let values = [];
+    let endpoint = '';
 
     if (currentType === 'estudiante') {
-        const cedVal = estudianteConCedula ? document.getElementById('cedula').value : "Rep: " + document.getElementById('cedula_representante').value;
-        values.push(cedVal);
-        data.fields.forEach(f => values.push(document.getElementById(f.name).value));
-    } else {
-        data.fields.forEach(f => {
-            const el = document.getElementById(f.name);
-            if (f.name === 'grado' && el.closest('.hidden')) {
-                values.push('N/A');
-            } else {
-                values.push(el.value);
-            }
-        });
+        endpoint = 'estudiantes';
+        payload = {
+        nombre: document.getElementById('nombre').value,
+        apellido: document.getElementById('apellido').value,
+        fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+        direccion: document.getElementById('direccion').value,
+        cedula: estudianteConCedula ? document.getElementById('cedula').value : null,
+        cedula_representante: estudianteConCedula ? null : document.getElementById('cedula_representante').value
+        };
+
+        values = [
+        estudianteConCedula ? payload.cedula : `Rep: ${payload.cedula_representante}`,
+        payload.nombre,
+        payload.apellido,
+        payload.fecha_nacimiento,
+        payload.direccion
+        ];
+    } else if (currentType === 'representante') {
+        endpoint = 'representantes';
+        payload = {
+        cedula: document.getElementById('cedula').value,
+        nombre: document.getElementById('nombre').value,
+        apellido: document.getElementById('apellido').value,
+        telefono: document.getElementById('telefono').value,
+        direccion: document.getElementById('direccion').value
+        };
+        values = [payload.cedula, payload.nombre, payload.apellido, payload.telefono, payload.direccion];
+    } else if (currentType === 'profesor') {
+        endpoint = 'profesores';
+        payload = {
+        cedula: document.getElementById('cedula').value,
+        nombre: document.getElementById('nombre').value,
+        apellido: document.getElementById('apellido').value,
+        email: document.getElementById('email').value,
+        telefono: document.getElementById('telefono').value,
+        cargo: document.getElementById('cargo').value,
+        grado: document.getElementById('grado').value,
+        seccion: document.getElementById('seccion').value
+        };
+        values = [payload.cedula, payload.nombre, payload.apellido, payload.email, payload.telefono, payload.cargo, payload.grado || 'N/A', payload.seccion || 'N/A'];
     }
 
-    data.rows.push(values);
-    renderTable(currentType);
+    try {
+        await sendRegistration(endpoint, payload);
+        await loadRegistroTable(currentType);
+        alert('Registro guardado en la base de datos correctamente.');
+    } catch (error) {
+        alert(`Error al guardar el registro: ${error.message}`);
+        return;
+    }
+
     registroForm.reset();
     renderForm(currentType);
 });
 
 // Inicialización
-buttons.forEach(button => button.addEventListener('click', () => selectPerson(button.dataset.person, button)));
-selectPerson('estudiante', document.querySelector('[data-person="estudiante"]'));
+buttons.forEach(button => button.addEventListener('click', async () => selectPerson(button.dataset.person, button)));
+selectPerson('estudiante', document.querySelector('[data-person="estudiante"]')).catch(console.error);
