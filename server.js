@@ -23,15 +23,37 @@ const pool = mysql.createPool({
 // Obtener todos los estudiantes
 app.get('/api/estudiantes', async (req, res) => {
     try {
-    const [rows] = await pool.query(`
-        SELECT e.*, r.nombre AS nombre_rep, r.apellido AS apellido_rep, r.cedula AS cedula_rep
-        FROM estudiante e
-        LEFT JOIN representante r ON e.id_representante_principal = r.id
-    `);
-    res.json(rows);
+        const limit = req.query.limit ? parseInt(req.query.limit, 10) : null;
+        let query = `
+            SELECT e.*, r.nombre AS nombre_rep, r.apellido AS apellido_rep, r.cedula AS cedula_rep
+            FROM estudiante e
+            LEFT JOIN representante r ON e.id_representante_principal = r.id
+        `;
+        const params = [];
+
+        if (limit && limit > 0) {
+            query += ' ORDER BY e.created_at DESC LIMIT ?';
+            params.push(limit);
+        } else {
+            query += ' ORDER BY e.created_at DESC';
+        }
+
+        const [rows] = await pool.query(query, params);
+        res.json(rows);
     } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error en el servidor' });
+        console.error(error);
+        res.status(500).json({ error: 'Error en el servidor' });
+    }
+});
+
+// Obtener total de estudiantes
+app.get('/api/estudiantes/count', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT COUNT(*) AS count FROM estudiante');
+        res.json(rows[0] || { count: 0 });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error en el servidor' });
     }
 });
 
