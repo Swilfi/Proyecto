@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Boletas - U.E. Hugo Chávez Frías</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="./estilos.css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Boletin Escolar</h2>
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="btn-t1" onclick="switchPage(1)">Página 1</button>
+            <button class="tab-btn" id="btn-t2" onclick="switchPage(2)">Página 2</button>
+        </div>
+
+        <div id="controls-p1">
+            <div class="input-group">
+                <label>Seleccionar Estudiante:</label>
+                <select id="in-nombre" onchange="actualizar()">
+                    <option value="">Seleccione un alumno...</option>
+                    <option value="Albornoz Rangel Elianny Camila">Albornoz Rangel Elianny Camila</option>
+                    <option value="Pérez Juan">Pérez Juan</option>
+                    <option value="García María">García María</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Año Escolar:</label>
+                <select id="in-periodo" onchange="actualizar()">
+                    <option value="2025-2026" selected>2025-2026</option>
+                    <option value="2024-2025">2024-2025</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Docente:</label>
+                <select id="in-docente" onchange="actualizar()">
+                    <option value="">Seleccione docente...</option>
+                    <option value="Lorena Salas">Lorena Salas</option>
+                    <option value="Marcos Rodríguez">Marcos Rodríguez</option>
+                    <option value="Elena Méndez">Elena Méndez</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="controls-p2" style="display:none;">
+            <div class="input-group">
+                <label>Momento Pedagógico:</label>
+                <select id="in-momento" onchange="actualizar()">
+                    <option value="PRIMER MOMENTO PEDAGÓGICO.<br>(Octubre- Diciembre)">1er Momento (Oct-Dic)</option>
+                    <option value="SEGUNDO MOMENTO PEDAGÓGICO.<br>(Enero- Abril)">2do Momento (Ene-Abr)</option>
+                    <option value="TERCER MOMENTO PEDAGÓGICO.<br>(Mayo- Julio)">3er Momento (May-Jul)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Temáticas del Proyecto (Centrado):</label>
+                <textarea id="in-proyectos" placeholder="Escriba los proyectos aquí..." oninput="actualizar()"></textarea>
+            </div>
+            <div class="input-group">
+                <label>Informe Descriptivo (Máx 2000):</label>
+                <textarea id="in-informe" maxlength="2000" style="min-height: 180px;" oninput="actualizar()"></textarea>
+                <small style="color: #bdc3c7; text-align: right;" id="char-count">0 / 2000</small>
+            </div>
+            <div class="input-group">
+                <label>Inasistencias:</label>
+                <input type="number" id="in-faltas" placeholder="0" oninput="actualizar()">
+            </div>
+            <div class="input-group">
+                <label>Recomendaciones:</label>
+                <textarea id="in-recom" maxlength="200" placeholder="Sugerencias..." oninput="actualizar()"></textarea>
+            </div>
+            <button class="btn-generate" id="btn-pdf-global" onclick="descargarPDF()" style="display:block;">GENERAR BOLETÍN COMPLETO</button>
+        </div>
+    </div>
+
+    <div class="preview-area">
+        <div id="boleta-completa">
+            <div id="page1" class="hoja-a4 active">
+                <div class="header-p1">
+                    <img src="Logo1.png" class="logo-p1">
+                    <div class="header-text-p1">
+                        REPÚBLICA BOLIVARIANA DE VENEZUELA<br>
+                        MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN<br>
+                        U. E "HUGO RAFAEL CHÁVEZ FRÍAS"<br>
+                        CÓDIGO DEA: OD11882120 &nbsp;&nbsp; RIF. J- 410130577
+                    </div>
+                </div>
+                <img src="Logo2.jpg" class="main-illustration">
+                <h1 class="main-title">BOLETÍN INFORMATIVO</h1>
+                <div class="student-data-p1">
+                    <div class="data-row"><span class="label">Apellidos y Nombres:</span> <span id="out-nombre">____________________</span></div>
+                    <div class="data-row"><span class="label">Fecha De Nacimiento:</span> <span>04/ 05/ 2015</span></div>
+                    <div class="data-row">
+                        <span class="label">Edad:</span> <span style="min-width: 80px;">10 años</span>
+                        <span class="label" style="min-width: 40px;">C.I:</span> <span>37122854</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Grado:</span> <span style="min-width: 80px;">5to</span>
+                        <span class="label" style="min-width: 60px;">Sección:</span> <span>"A"</span>
+                    </div>
+                    <div class="data-row"><span class="label">Representante:</span> <span>Rangel Jhalenys</span></div>
+                    <div class="data-row"><span class="label">C.I:</span> <span>27151545</span></div>
+                    <div class="data-row"><span class="label">Dirección:</span> <span>Urb. Santa Cruz 3era Etapa</span></div>
+                    <div class="data-row"><span class="label">Docente:</span> <span id="out-docente">____________________</span></div>
+                </div>
+                <div class="footer-año">AÑO ESCOLAR <span id="out-periodo">2025-2026</span></div>
+            </div>
+            <div id="page2" class="hoja-a4">
+                <div class="header-p2">
+                    <img src="Logo3.png" class="logo-p2">
+                    <img src="Logo4.png" class="logo-p2">
+                </div>
+                <div class="titulo-momento" id="out-momento">PRIMER MOMENTO PEDAGÓGICO.</div>
+                <div class="subtitulo-centrado">TEMÁTICAS DE LOS PROYECTOS DE APRENDIZAJE:</div>
+                <div id="out-proyectos"></div>
+                <div class="cuerpo-texto" id="out-informe"></div>
+                <div class="info-final">
+                    <p><strong>Inasistencias:</strong> <span id="out-faltas">0</span></p>
+                    <p><strong>Recomendaciones del Docente:</strong> <span id="out-recom"></span></p>
+                </div>
+                <div class="firmas-container">
+                    <div class="linea-firma">Directivo</div>
+                    <div class="linea-firma">Docente</div>
+                    <div class="linea-firma">Representante</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

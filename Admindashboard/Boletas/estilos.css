@@ -1,0 +1,145 @@
+:root {
+            --sidebar-width: 380px;
+            --primary-bg: #2c3e50;
+            --accent-color: #3aa8ad;
+            --text-light: #ecf0f1;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #bdc3c7;
+            overflow: hidden;
+        }
+
+        /* --- PANEL DE CONTROL (SIDEBAR) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            z-index: 10;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+        }
+
+        .sidebar h2 { font-size: 1.1rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; margin: 10px 0; }
+
+        .nav-tabs { display: flex; gap: 5px; margin-bottom: 10px; }
+        .tab-btn {
+            flex: 1; padding: 10px; border: none; border-radius: 4px;
+            background: #34495e; color: white; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--accent-color); }
+
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group label { font-size: 0.8rem; color: #bdc3c7; font-weight: bold; }
+        .input-group input, .input-group select, .input-group textarea {
+            padding: 8px; border-radius: 4px; border: none; outline: none; font-size: 0.9rem;
+        }
+        
+        textarea { resize: vertical; min-height: 80px; font-family: sans-serif; }
+
+        .btn-generate {
+            background-color: #27ae60; color: white; padding: 15px;
+            border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 1rem;
+            display: none; 
+            width: 100%;
+        }
+        .btn-generate:hover { background-color: #2ecc71; }
+
+        /* --- AREA DE PREVISUALIZACIÓN --- */
+        .preview-area {
+            flex-grow: 1; padding: 20px; overflow-y: auto;
+            display: flex; justify-content: center; align-items: flex-start;
+        }
+
+        #boleta-completa {
+            display: block; 
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .hoja-a4 {
+            width: 210mm;
+            height: 296mm; 
+            background: white;
+            padding: 15mm 20mm;
+            box-sizing: border-box;
+            position: relative;
+            margin: 0 auto !important;
+            display: none;
+            overflow: hidden;
+            page-break-after: always;
+            /* Flex para ayudar al centrado */
+            flex-direction: column;
+            align-items: center; 
+        }
+
+        .hoja-a4.active {
+            display: flex;
+        }
+
+        /* --- ESTILOS PÁGINA 1 --- */
+        .header-p1 { text-align: center; width: 100%; margin-bottom: 5mm; }
+        .logo-p1 { height: 28mm; margin-bottom: 5px; }
+        .header-text-p1 { font-size: 10.5pt; font-weight: bold; text-transform: uppercase; line-height: 1.2; }
+        
+        .main-illustration { 
+            margin: 15mm auto; 
+            width: 90mm; 
+            display: block; 
+            object-fit: contain;
+        }
+
+        .main-title { font-size: 26pt; font-weight: bold; text-align: center; letter-spacing: 2px; margin: 10mm 0; width: 100%; }
+        .student-data-p1 { margin-top: auto; margin-bottom: 25mm; font-size: 9pt; width: 100%; line-height: 1.2; }
+        .data-row { display: flex; margin-bottom: 2pt; width: 100%; }
+        .label { font-weight: bold; min-width: 130px; }
+        .footer-año { position: absolute; bottom: 15mm; width: calc(100% - 40mm); text-align: center; font-weight: bold; font-size: 12pt; }
+
+        /* --- ESTILOS PÁGINA 2 --- */
+        .header-p2 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8mm; width: 100%; }
+        .logo-p2 { height: 22mm; }
+        .titulo-momento { text-align: center; font-weight: bold; font-size: 13pt; margin-bottom: 6mm; text-transform: uppercase; width: 100%; }
+        
+        .subtitulo-centrado {
+            font-weight: bold; font-size: 11pt; text-decoration: underline;
+            margin-bottom: 4mm; text-align: center; width: 100%;
+        }
+
+        #out-proyectos {
+            font-size: 11pt; font-style: italic; text-align: center; width: 100%;
+            margin-bottom: 8mm; line-height: 1.4;
+            word-wrap: break-word; overflow-wrap: break-word; white-space: normal;
+        }
+
+        .cuerpo-texto { 
+            font-size: 10.5pt; text-align: justify; line-height: 1.5; 
+            margin-bottom: 8mm; min-height: 100mm; width: 100%;
+            word-wrap: break-word; overflow-wrap: break-word;
+        }
+        
+        .info-final { font-size: 10.5pt; margin-top: auto; width: 100%; }
+        .info-final p { margin: 4px 0; }
+
+        .firmas-container {
+            display: flex; justify-content: space-between;
+            text-align: center; font-size: 10pt; margin-top: 15mm; margin-bottom: 10mm; width: 100%;
+        }
+        .linea-firma { border-top: 1px solid black; width: 52mm; padding-top: 5px; font-weight: bold; }
+
+        #out-recom {
+            word-wrap: break-word; 
+            overflow-wrap: break-word; 
+            white-space: normal;
+            display: block;
+            width: 100%;
+            text-align: justify;
+        }
