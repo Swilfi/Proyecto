@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Control de Asistencia</title>
+    <style>
+        /* Estilo rápido para el botón de volver sin alterar tu estilos.css */
+        .nav-header {
+            max-width: 1000px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .btn-volver-link {
+            text-decoration: none;
+            color: #3db1ab; /* Usando el turquesa de tu dashboard */
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-volver-link:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="nav-header">
+            <a href="../index.html" class="btn-volver-link">
+                <span>←</span> Volver al Panel Principal
+            </a>
+        </div>
+
+        <div class="asistencia-card">
+            
+            <div class="card-header">
+                <div class="header-info">
+                    <h1>Control de Asistencia</h1>
+                    <p>Registro diario y acumulativo de estudiantes</p>
+                </div>
+                <div class="header-action">
+                    <input type="date" id="fechaAsistencia" class="input-fecha-moderno">
+                </div>
+            </div>
+
+            <div class="card-body">
+                <table class="tabla-moderna">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th class="text-center">Total Asistencias</th>
+                            <th class="text-center">Total Insasistencias</th>
+                            <th class="text-center">Acción de Hoy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaEstudiantes">
+                        <tr>
+                            <td>
+                                <div class="info-estudiante">
+                                    <span class="avatar-placeholder">AG</span>
+                                    <div class="detalles-nombre">
+                                        <span class="nombre-estudiante">Ana García</span>
+                                        <span class="id-estudiante">ID: 001</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge-asistencia">15</span>
+                            </td>
+                            <td class="text-center">
+                                </td>
+                            <td class="text-center">
+                                <div class="controles-asistencia">
+                                    <label class="radio-asistencia presente">
+                                        <input type="radio" name="ast-001" value="p">
+                                        <span class="radio-label">Asistió</span>
+                                    </label>
+                                    <label class="radio-asistencia falto">
+                                        <input type="radio" name="ast-001" value="f">
+                                        <span class="radio-label">Faltó</span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn-guardar-moderno" onclick="guardarAsistencia()">
+                    <span>Guardar Asistencia del Día</span>
+                    <span class="icon">💾</span>
+                </button>
+            </div>
+        </div>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>

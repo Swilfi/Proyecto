@@ -1,0 +1,273 @@
+/* --- Reseteo y Base --- */
+:root {
+    --primary: #3498db;    /* Azul moderno */
+    --success: #2ecc71;    /* Verde suave */
+    --danger: #e74c3c;     /* Rojo suave */
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+    --bg-light: #f4f7f6;
+    --white: #ffffff;
+    --shadow: 0 10px 30px rgba(44, 62, 80, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* --- La Tarjeta Principal (Card) --- */
+.asistencia-card {
+    background-color: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden; /* Para que los bordes redondeados funcionen */
+}
+
+/* --- Encabezado --- */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    border-bottom: 1px solid #eee;
+    background-color: #fafbfc;
+}
+
+.card-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.card-header p {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+}
+
+.input-fecha-moderno {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: var(--white);
+    transition: border-color 0.2s;
+}
+
+.input-fecha-moderno:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* --- Tabla Moderna --- */
+.card-body { padding: 0; }
+
+.tabla-moderna {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-moderna thead th {
+    text-align: left;
+    padding: 15px 30px;
+    background-color: #f8f9fa;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #eee;
+}
+
+.tabla-moderna tbody td {
+    padding: 20px 30px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.tabla-moderna tbody tr:last-child td { border-bottom: none; }
+
+.tabla-moderna tbody tr:hover {
+    background-color: #fbfdff;
+}
+
+/* Detalles del Estudiante */
+.info-estudiante {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar-placeholder {
+    width: 45px;
+    height: 45px;
+    background-color: #e1e8ed;
+    color: var(--text-muted);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.detalles-nombre {
+    display: flex;
+    flex-direction: column;
+}
+
+.nombre-estudiante {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.id-estudiante {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* Badge del Contador */
+.badge-asistencia {
+    background-color: rgba(52, 152, 219, 0.1); /* Fondo azul muy claro */
+    color: var(--primary);
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* --- Controles de Asistencia (Radios Estilizados) --- */
+.controles-asistencia {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.radio-asistencia {
+    cursor: pointer;
+    position: relative;
+}
+
+/* Ocultar el radio button nativo */
+.radio-asistencia input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* El label que actúa como botón */
+.radio-label {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+/* Hover effects */
+.presente:hover .radio-label { border-color: var(--success); color: var(--success); }
+.falto:hover .radio-label { border-color: var(--danger); color: var(--danger); }
+
+/* Estados 'Checked' */
+.presente input[type="radio"]:checked + .radio-label {
+    background-color: var(--success);
+    border-color: var(--success);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+}
+
+.falto input[type="radio"]:checked + .radio-label {
+    background-color: var(--danger);
+    border-color: var(--danger);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+}
+
+/* --- Footer --- */
+.card-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #eee;
+    background-color: #fafbfc;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-guardar-moderno {
+    background: linear-gradient(135deg, var(--success) 0%, #27ae60 100%);
+    color: var(--white);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn-guardar-moderno:hover {
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+}
+
+.btn-guardar-moderno:active {
+    transform: translateY(1px);
+}
+
+/* Útil */
+.text-center { text-align: center; }
+
+.radio-asistencia.deshabilitado {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none; /* Evita que se pueda clickear */
+}
+
+
+
+
+/* --- Círculos de Colores (Badges) --- */
+.badge-conteo {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Verde para Asistencias */
+.badge-asistencia-verde {
+    background-color: #eefaf9;
+    color: #3db1ab;
+    border: 2px solid #3db1ab;
+}
+
+/* Rojo para Inasistencias */
+.badge-inasistencia-roja {
+    background-color: #fef5f5;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
