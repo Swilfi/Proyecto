@@ -115,7 +115,7 @@
         }
 
         #out-proyectos {
-            font-size: 11pt; font-style: italic; text-align: center; width: 100%;
+            font-size: 11pt; font-style: italic; text-align: justify; width: 100%;
             margin-bottom: 8mm; line-height: 1.4;
             word-wrap: break-word; overflow-wrap: break-word; white-space: normal;
         }

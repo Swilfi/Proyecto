@@ -29,6 +29,7 @@ toggle.onclick = function() {
     container.classList.toggle('active');
 };
 
+// Funciones para cargar datos de estudiantes en la tabla y actualizar el contador total
 async function cargarUltimosEstudiantes() {
     const tbody = document.getElementById('ultimos-estudiantes-body');
     if (!tbody) return;
@@ -94,7 +95,74 @@ async function actualizarTotalEstudiantes() {
     }
 }
 
+
+
+//Funcion para actualizar en la tabla los profesores registrados
+async function cargarPersonal() {
+    const tbody = document.getElementById('tabla-personal-body');
+    if (!tbody) return;
+
+    const apiBase = 'http://localhost:3000';
+
+    try {
+        // Ajustamos la URL para el personal
+        const response = await fetch(`${apiBase}/api/personal`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const personal = await response.json();
+
+        if (!Array.isArray(personal) || personal.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4">No hay personal registrado aún.</td></tr>';
+            return;
+        }
+
+        // Mapeamos los campos según tu base de datos (ej: nombre, cargo, cedula)
+        tbody.innerHTML = personal.map(p => `
+
+            <tr>
+                <td>${p.id || ''}</td>
+                <td>${p.nombre || ''}</td>
+                <td>${p.apellido || ''}</td>
+                <td>${p.cedula || 'N/A'}</td>
+            </tr>
+        `).join('');
+    } catch (error) {
+        console.error('Error cargando personal:', error);
+        tbody.innerHTML = '<tr><td colspan="4">No se pudo cargar la información del personal.</td></tr>';
+    }
+}
+
+async function actualizarTotalPersonal() {
+    const contador = document.getElementById('total-personal-count');
+    if (!contador) return;
+
+    const apiBase = 'http://localhost:3000';
+
+    try {
+        let response = await fetch(`${apiBase}/api/personal/count`);
+        
+        // Si no tienes un endpoint de conteo, usamos el fallback al array completo
+        if (!response.ok) {
+            const fallback = await fetch(`${apiBase}/api/personal`);
+            const data = await fallback.json();
+            contador.textContent = Array.isArray(data) ? data.length : '0';
+            return;
+        }
+
+        const data = await response.json();
+        contador.textContent = data.count ?? '0';
+    } catch (error) {
+        console.error('Error en total personal:', error);
+        contador.textContent = '-';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Tus funciones de estudiantes existentes
     cargarUltimosEstudiantes();
     actualizarTotalEstudiantes();
+
+    // Nuevas funciones de personal
+    cargarPersonal();
+    actualizarTotalPersonal();
 });

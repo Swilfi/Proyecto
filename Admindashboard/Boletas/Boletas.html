@@ -6,10 +6,40 @@
     <title>Sistema de Gestión de Boletas - U.E. Hugo Chávez Frías</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="./estilos.css">
+    <style>
+        /* Estilo rápido para el botón de volver sin alterar tu estilos.css */
+        .nav-header {
+            max-width: 1000px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .btn-volver-link {
+            text-decoration: none;
+            color: #3db1ab; /* Usando el turquesa de tu dashboard */
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-volver-link:hover {
+            opacity: 0.7;
+        }
+    </style>
+
 </head>
 <body>
 
     <div class="sidebar">
+        
+        <div class="nav-header">
+            <a href="../index.html" class="btn-volver-link">
+                <span>←</span> Volver al Panel Principal
+            </a>
+        </div>
+        
         <h2>Boletin Escolar</h2>
         <div class="nav-tabs">
             <button class="tab-btn active" id="btn-t1" onclick="switchPage(1)">Página 1</button>
@@ -55,7 +85,7 @@
             </div>
             <div class="input-group">
                 <label>Temáticas del Proyecto (Centrado):</label>
-                <textarea id="in-proyectos" placeholder="Escriba los proyectos aquí..." oninput="actualizar()"></textarea>
+                <textarea id="in-proyectos" maxlength="150" placeholder="Escriba los proyectos aquí..." oninput="actualizar()"></textarea>
             </div>
             <div class="input-group">
                 <label>Informe Descriptivo (Máx 2000):</label>
