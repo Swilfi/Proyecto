@@ -157,6 +157,37 @@ async function actualizarTotalPersonal() {
     }
 }
 
+async function cargarProfesoresAula() {
+    const tbody = document.getElementById('profesores-aula-body');
+    if (!tbody) return;
+
+    const apiBase = 'http://localhost:3000';
+
+    try {
+        const response = await fetch(`${apiBase}/api/profesores`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const profesores = await response.json();
+
+        if (!Array.isArray(profesores) || profesores.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5">No hay profesores registrados aún.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = profesores.map(prof => `
+            <tr>
+                <td>${prof.id || ''}</td>
+                <td>${prof.nombre || ''}</td>
+                <td>${prof.apellido || ''}</td>
+                <td>${prof.cedula || 'N/A'}</td>
+                <td>${prof.grado_asignado || prof.grado_num || 'N/A'}</td>
+            </tr>
+        `).join('');
+    } catch (error) {
+        console.error('Error cargando profesores de aula:', error);
+        tbody.innerHTML = '<tr><td colspan="5">No se pudo cargar los profesores.</td></tr>';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Tus funciones de estudiantes existentes
     cargarUltimosEstudiantes();
@@ -165,4 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Nuevas funciones de personal
     cargarPersonal();
     actualizarTotalPersonal();
+
+    // Función para cargar profesores de aula
+    cargarProfesoresAula();
 });
