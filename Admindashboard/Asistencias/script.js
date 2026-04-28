@@ -1,54 +1,52 @@
-// ==========================================
-// 1. VARIABLES GLOBALES Y CONFIGURACIÓN
-// ==========================================
-let estudiantes = []; // Se llenará con datos de MySQL
-let fechasSistema = []; // Podrás cargar esto de la BD más adelante
+let estudiantes = []; 
 
-// ==========================================
-// 2. FUNCIÓN PARA CARGAR DESDE EL SERVIDOR (NUEVA)
-// ==========================================
+async function cargarEstudiantesDesdeBD() {
+    const grado = document.getElementById('selectGrado').value;
+    const seccion = document.getElementById('selectSeccion').value;
+    const fecha = document.getElementById('fechaAsistencia').value;
 
-// Lista "maestra" de lo que DEBERÍA haber
-const listaInicial = [
-    { id: "001", nombre: "Ana García", iniciales: "AG", asistencias: 0, fechas: [] },
-    { id: "002", nombre: "Juan Pérez", iniciales: "JP", asistencias: 0, fechas: [] },
-    { id: "003", nombre: "Carla Solis", iniciales: "CS", asistencias: 0, fechas: [] }
-];
+    console.log("Cargando para:", { grado, seccion, fecha }); 
 
-let datosApp = JSON.parse(localStorage.getItem('asistencias_db'));
+    if (!grado || !seccion || !fecha) return;
 
-// Si no hay nada en LocalStorage O la lista de estudiantes está vacía/incompleta
-if (!datosApp || !datosApp.estudiantes || datosApp.estudiantes.length < 3) {
-    datosApp = {
-        estudiantes: listaInicial,
-        fechasSistema: []
-    };
-    // Guardamos la lista completa de una vez para que no se pierdan
-    localStorage.setItem('asistencias_db', JSON.stringify(datosApp));
+    try {
+        const url = `http://localhost:3000/api/obtener-estudiantes?grado=${grado}&seccion=${seccion}&fecha=${fecha}`;
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
+
+        console.log("Datos crudos recibidos:", datos); 
+
+        estudiantes = datos.map(est => ({
+            id: est.id,
+            nombre: `${est.nombre} ${est.apellido}`,
+            iniciales: ((est.nombre ? est.nombre[0] : "") + (est.apellido ? est.apellido[0] : "")).toUpperCase(),
+            asistencias: est.total_asistencias || 0,
+            inasistencias: est.total_inasistencias || 0,
+            registradoHoy: est.estado_hoy
+        }));
+
+        renderizarTabla(); 
+    } catch (error) {
+        console.error("Error al obtener datos:", error);
+        document.getElementById('listaEstudiantes').innerHTML = `<tr><td colspan="4" style="color:red;">Error de conexión con el servidor</td></tr>`;
+    }
 }
 
-let estudiantes = datosApp.estudiantes;
-let fechasSistema = datosApp.fechasSistema;
-
-// ==========================================
-// 2. FUNCIÓN PARA DIBUJAR LA TABLA
-// ==========================================
 function renderizarTabla() {
     const cuerpoTabla = document.getElementById('listaEstudiantes');
-    const fechaActual = document.getElementById('fechaAsistencia').value;
-
+    const botonGuardar = document.querySelector('.btn-guardar-moderno');
     
-    // El total de inasistencias se basa en cuántos días se ha pasado lista en total
-    const totalDiasClase = fechasSistema.length;
+    if (!cuerpoTabla) return;
 
     cuerpoTabla.innerHTML = ""; 
 
+    if (estudiantes.length === 0) {
+        cuerpoTabla.innerHTML = `<tr><td colspan="4" class="text-center">No hay estudiantes registrados</td></tr>`;
+        return;
+    }
+
     estudiantes.forEach(est => {
-        // ¿El estudiante ya tiene registro de asistencia en la fecha que muestra el calendario?
-        const yaAsistioHoy = (est.fechas || []).includes(fechaActual);
-        
-        // Cálculo de inasistencias: (Días totales) - (Días que asistió)
-        const inasistencias = totalDiasClase - (est.asistencias || 0);
+        const yaRegistrado = est.registradoHoy !== null;
 
         const fila = document.createElement('tr');
         fila.innerHTML = `
@@ -65,85 +63,79 @@ function renderizarTabla() {
                 <span class="badge-conteo badge-asistencia-verde">${est.asistencias}</span>
             </td>
             <td class="text-center">
-                <span class="badge-conteo badge-inasistencia-roja">${inasistencias}</span>
+                <span class="badge-conteo badge-inasistencia-roja">${est.inasistencias}</span>
             </td>
             <td class="text-center">
                 <div class="controles-asistencia">
-                    <label class="radio-asistencia presente ${yaAsistioHoy ? 'deshabilitado' : ''}">
-                        <input type="radio" name="ast-${est.id}" value="p" id="p-${est.id}" ${yaAsistioHoy ? 'disabled' : ''}>
+                    <label class="radio-asistencia presente ${yaRegistrado ? 'deshabilitado' : ''}">
+                        <input type="radio" name="ast-${est.id}" value="p" id="p-${est.id}" 
+                            ${yaRegistrado && est.registradoHoy === 'Asistió' ? 'checked' : ''} 
+                            ${yaRegistrado ? 'disabled' : ''}>
                         <span class="radio-label">Asistió</span>
                     </label>
-                    <label class="radio-asistencia falto ${yaAsistioHoy ? 'deshabilitado' : ''}">
-                        <input type="radio" name="ast-${est.id}" value="f" id="f-${est.id}" ${yaAsistioHoy ? 'disabled' : 'checked'}>
+                    <label class="radio-asistencia falto ${yaRegistrado ? 'deshabilitado' : ''}">
+                        <input type="radio" name="ast-${est.id}" value="f" id="f-${est.id}" 
+                            ${yaRegistrado && est.registradoHoy === 'Inasistente' ? 'checked' : (!yaRegistrado ? 'checked' : '')} 
+                            ${yaRegistrado ? 'disabled' : ''}>
                         <span class="radio-label">Faltó</span>
                     </label>
                 </div>
-                ${yaAsistioHoy ? '<div style="margin-top:5px; color:#2ecc71; font-size:12px; font-weight:bold;">✓ Registrado</div>' : ''}
+                ${yaRegistrado ? '<div style="margin-top:5px; color:#3db1ab; font-size:11px; font-weight:bold;">✓ REGISTRADO</div>' : ''}
             </td>
         `;
         cuerpoTabla.appendChild(fila);
     });
+
+    if (botonGuardar) {
+        const todosRegistrados = estudiantes.every(e => e.registradoHoy !== null);
+        botonGuardar.disabled = todosRegistrados;
+        botonGuardar.style.opacity = todosRegistrados ? "0.5" : "1";
+        botonGuardar.innerHTML = todosRegistrados ? '<span>Asistencia Completada ✓</span>' : '<span>Guardar Asistencia del Día</span> <span class="icon">💾</span>';
+    }
 }
 
-// ==========================================
-// 3. LÓGICA DE GUARDADO Y PERSISTENCIA
-// ==========================================
-function guardarAsistencia() {
-    const fechaSeleccionada = document.getElementById('fechaAsistencia').value;
+// NUEVA FUNCIÓN: Ahora sí el botón tendrá qué ejecutar
+async function guardarAsistencia() {
+    const fecha = document.getElementById('fechaAsistencia').value;
     
-    if (!fechaSeleccionada) {
-        alert("Por favor, selecciona una fecha válida.");
-        return;
-    }
+    // Filtrar solo los que NO están registrados para no duplicar en la BD
+    const pendientes = estudiantes.filter(e => e.registradoHoy === null);
 
-    // 1. Registrar la fecha en el historial del sistema (si es nueva)
-    if (!fechasSistema.includes(fechaSeleccionada)) {
-        fechasSistema.push(fechaSeleccionada);
-    }
+    if (pendientes.length === 0) return;
 
-    let nuevasAsistencias = 0;
-
-    // 2. Recorrer estudiantes y actualizar solo si marcaron "Asistió"
-    estudiantes.forEach(est => {
-        const radioPresente = document.getElementById(`p-${est.id}`);
-        
-        if (radioPresente && radioPresente.checked) {
-            // Verificar que no se duplique la asistencia para el mismo día
-            if (!est.fechas.includes(fechaSeleccionada)) {
-                est.asistencias += 1;
-                est.fechas.push(fechaSeleccionada);
-                nuevasAsistencias++;
-            }
-        }
-    });
-
-    // 3. Guardar el objeto completo en LocalStorage
-    localStorage.setItem('asistencias_db', JSON.stringify({
-        estudiantes: estudiantes,
-        fechasSistema: fechasSistema
+    const registros = pendientes.map(est => ({
+        id_estudiante: est.id,
+        estado_db: document.getElementById(`p-${est.id}`).checked ? 'Asistió' : 'Inasistente',
+        observaciones: ""
     }));
-    
-    // 4. Actualizar la interfaz
-    renderizarTabla();
 
-    if (nuevasAsistencias > 0) {
-        alert(`Se guardaron ${nuevasAsistencias} asistencias para el día ${fechaSeleccionada}`);
-    } else {
-        alert("La asistencia para esta fecha ya estaba registrada o no hubo nuevos asistentes.");
+    try {
+        const respuesta = await fetch('http://localhost:3000/api/guardar-asistencia', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fecha, registros })
+        });
+
+        if (respuesta.ok) {
+            alert("Asistencia guardada correctamente");
+            cargarEstudiantesDesdeBD(); // Recargar para bloquear botones
+        } else {
+            alert("Error al guardar");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error de conexión");
     }
 }
 
-// ==========================================
-// 4. CONFIGURACIÓN INICIAL (AL CARGAR)
-// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const inputFecha = document.getElementById('fechaAsistencia');
-    
-    // Ponemos la fecha de hoy por defecto
-    const hoy = new Date().toISOString().split('T')[0];
-    inputFecha.value = hoy;
+    const selectGrado = document.getElementById('selectGrado');
+    const selectSeccion = document.getElementById('selectSeccion');
 
-    // Si el profe cambia la fecha en el calendario, la tabla se actualiza
-    // para mostrar quién ya tiene asistencia en esa fecha específica
-    inputFecha.addEventListener('change', renderizarTabla);
+    if (inputFecha) inputFecha.value = new Date().toISOString().split('T')[0];
+
+    [selectGrado, selectSeccion, inputFecha].forEach(el => {
+        if (el) el.addEventListener('change', cargarEstudiantesDesdeBD);
+    });
 });

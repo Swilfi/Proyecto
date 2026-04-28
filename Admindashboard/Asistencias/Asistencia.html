@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="estilos.css">
     <title>Control de Asistencia</title>
     <style>
-        /* Estilo rápido para el botón de volver sin alterar tu estilos.css */
         .nav-header {
             max-width: 1000px;
             margin: 0 auto 15px auto;
@@ -15,7 +14,7 @@
         }
         .btn-volver-link {
             text-decoration: none;
-            color: #3db1ab; /* Usando el turquesa de tu dashboard */
+            color: #3db1ab; 
             font-weight: 600;
             font-size: 0.9rem;
             display: flex;
@@ -23,9 +22,24 @@
             gap: 5px;
             transition: opacity 0.2s;
         }
-        .btn-volver-link:hover {
-            opacity: 0.7;
+        .btn-volver-link:hover { opacity: 0.7; }
+
+        /* Estilos para los nuevos selectores */
+        .filtros-asistencia {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
+        .select-moderno {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #4a4a4a;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+        }
+        .select-moderno:focus { border-color: #3db1ab; }
     </style>
 </head>
 <body>
@@ -38,15 +52,35 @@
 
         <div class="asistencia-card">
             
-            <div class="card-header">
-                <div class="header-info">
-                    <h1>Control de Asistencia</h1>
-                    <p>Registro diario y acumulativo de estudiantes</p>
-                </div>
-                <div class="header-action">
-                    <input type="date" id="fechaAsistencia" class="input-fecha-moderno">
-                </div>
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px;">
+    <div class="header-info">
+        <h1 style="margin: 0; font-size: 1.4rem; color: #2c3e50;">Control de Asistencia</h1>
+        <p style="margin: 4px 0 0; color: #888; font-size: 0.9rem;">Registro diario y acumulativo de estudiantes</p>
+    </div>
+    
+    <div class="header-action">
+        <div class="filtros-asistencia">
+            <select id="selectGrado" class="select-moderno">
+                <option value="" disabled selected>Año</option>
+                <option value="1">1ero</option>
+                <option value="2">2do</option>
+                <option value="3">3ero</option>
+                <option value="4">4to</option>
+                <option value="5">5to</option>
+                <option value="6">6to</option>
+            </select>
+
+            <select id="selectSeccion" class="select-moderno">
+                <option value="" disabled selected>Sección</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+
+                <input type="date" id="fechaAsistencia" class="input-fecha-moderno">
             </div>
+        </div>
+    </div>
 
             <div class="card-body">
                 <table class="tabla-moderna">
@@ -54,40 +88,12 @@
                         <tr>
                             <th>Estudiante</th>
                             <th class="text-center">Total Asistencias</th>
-                            <th class="text-center">Total Insasistencias</th>
+                            <th class="text-center">Total Inasistencias</th>
                             <th class="text-center">Acción de Hoy</th>
                         </tr>
                     </thead>
                     <tbody id="listaEstudiantes">
-                        <tr>
-                            <td>
-                                <div class="info-estudiante">
-                                    <span class="avatar-placeholder">AG</span>
-                                    <div class="detalles-nombre">
-                                        <span class="nombre-estudiante">Ana García</span>
-                                        <span class="id-estudiante">ID: 001</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="badge-asistencia">15</span>
-                            </td>
-                            <td class="text-center">
-                                </td>
-                            <td class="text-center">
-                                <div class="controles-asistencia">
-                                    <label class="radio-asistencia presente">
-                                        <input type="radio" name="ast-001" value="p">
-                                        <span class="radio-label">Asistió</span>
-                                    </label>
-                                    <label class="radio-asistencia falto">
-                                        <input type="radio" name="ast-001" value="f">
-                                        <span class="radio-label">Faltó</span>
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
 

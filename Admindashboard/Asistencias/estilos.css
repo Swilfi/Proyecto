@@ -271,3 +271,82 @@ body {
     color: #e74c3c;
     border: 2px solid #e74c3c;
 }
+
+/* Contenedor de navegación superior */
+.nav-header {
+    max-width: 1000px;
+    margin: 0 auto 15px auto;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Botón Volver con estilo "Ghost" */
+.btn-volver-link {
+    text-decoration: none;
+    color: #3db1ab; 
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: rgba(61, 177, 171, 0.08); /* Fondo turquesa muy suave */
+    transition: all 0.3s ease;
+}
+
+.btn-volver-link:hover {
+    background-color: rgba(61, 177, 171, 0.15);
+    transform: translateX(-4px); /* Efecto de empuje hacia atrás */
+}
+
+/* Contenedor de filtros */
+.header-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filtros-asistencia {
+    display: flex;
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 5px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+}
+
+/* Selectores estilizados como "Chips" */
+.select-moderno {
+    border: 1px solid transparent;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #555;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.select-moderno:hover {
+    border-color: #3db1ab;
+    color: #3db1ab;
+}
+
+.select-moderno:focus {
+    border-color: #3db1ab;
+    box-shadow: 0 0 0 3px rgba(61, 177, 171, 0.2);
+    outline: none;
+}
+
+/* Input de fecha para que combine */
+.input-fecha-moderno {
+    border: 1px solid #eee;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #555;
+    background-color: white;
+}
