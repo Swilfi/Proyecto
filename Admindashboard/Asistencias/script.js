@@ -1,5 +1,11 @@
 // ==========================================
-// 1. ESTRUCTURA DE DATOS E INICIALIZACIÓN (REFORZADA)
+// 1. VARIABLES GLOBALES Y CONFIGURACIÓN
+// ==========================================
+let estudiantes = []; // Se llenará con datos de MySQL
+let fechasSistema = []; // Podrás cargar esto de la BD más adelante
+
+// ==========================================
+// 2. FUNCIÓN PARA CARGAR DESDE EL SERVIDOR (NUEVA)
 // ==========================================
 
 // Lista "maestra" de lo que DEBERÍA haber
@@ -140,6 +146,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Si el profe cambia la fecha en el calendario, la tabla se actualiza
     // para mostrar quién ya tiene asistencia en esa fecha específica
     inputFecha.addEventListener('change', renderizarTabla);
-    
-    renderizarTabla();
 });
