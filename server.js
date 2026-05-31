@@ -1,11 +1,13 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config({ path: './config.env' });
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/admin', express.static(path.join(__dirname, 'Admindashboard')));
 
 // Pool de conexiones
 const pool = mysql.createPool({
@@ -23,23 +25,33 @@ const pool = mysql.createPool({
 app.get('/api/estudiantes', async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit, 10) : null;
+        const grado = req.query.grado || null;
+        const seccion = req.query.seccion || null;
+
         let query = `
             SELECT e.*, r.nombre AS nombre_rep, r.apellido AS apellido_rep, r.cedula AS cedula_rep
             FROM estudiante e
             LEFT JOIN representante r ON e.id_representante_principal = r.id
         `;
+        const where = [];
         const params = [];
+        if (grado) { where.push('e.grado = ?'); params.push(grado); }
+        if (seccion) { where.push('e.seccion = ?'); params.push(seccion); }
+        if (where.length) query += ' WHERE ' + where.join(' AND ');
+
         if (limit && limit > 0) {
-            query += ' ORDER BY e.created_at DESC LIMIT ?';
+            query += ' ORDER BY e.id DESC LIMIT ?';
             params.push(limit);
         } else {
-            query += ' ORDER BY e.created_at DESC';
+            query += ' ORDER BY e.id DESC';
         }
+
         const [rows] = await pool.query(query, params);
         res.json(rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Error en el servidor' });
+        // Dev: devolver detalle para depuración local
+        res.status(500).json({ error: 'Error en el servidor', detalle: error.message });
     }
 });
 

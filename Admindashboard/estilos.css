@@ -286,7 +286,8 @@ section {
     grid-gap: 30px;
 }
 
-.cards .card {
+.cards .card,
+.cards a.card {
     position: relative;
     background: var(--white);
     padding: 30px;
@@ -296,9 +297,12 @@ section {
     justify-content: space-between;
     cursor: pointer;
     transition: 0.4s;
+    text-decoration: none;
+    color: inherit;
 }
 
-.cards .card:hover {
+.cards .card:hover,
+.cards a.card:hover {
     background: var(--purple);
 }
 

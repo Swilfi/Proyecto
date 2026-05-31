@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Observaciones</title>
+	<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+	<main class="container">
+		<div class="topbar">
+			<div class="topbar-left">
+				<a href="../index.html" class="button-back">← Volver al dashboard</a>
+			</div>
+			<div>
+				<h1>Observaciones</h1>
+				<span class="page-subtitle">Registra y filtra observaciones por grado</span>
+			</div>
+		</div>
+
+		<div class="card filter-row">
+			<label for="gradeFilter">Filtrar por grado</label>
+			<div style="display:flex;gap:8px;align-items:center;">
+				<select id="gradeFilter">
+					<option value="">-- Todos los grados --</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</select>
+				<button id="clearGrade" type="button" class="secondary">Borrar filtro</button>
+			</div>
+		</div>
+
+		<form id="observacionForm" class="card">
+			<label for="studentSelect">Estudiante</label>
+			<select id="studentSelect" required>
+				<option value="">-- Selecciona un estudiante --</option>
+			</select>
+			<div id="studentStatus" class="status"></div>
+
+			<label>Tipo</label>
+			<div class="radio-row">
+				<label><input type="radio" name="tipo" value="Positiva" checked> Positiva</label>
+				<label><input type="radio" name="tipo" value="Negativa"> Negativa</label>
+			</div>
+
+			<label for="descripcion">Descripción</label>
+			<textarea id="descripcion" rows="4" placeholder="Describe la observación" required></textarea>
+
+			<div class="actions">
+				<button type="submit">Agregar observación</button>
+				<button type="button" id="limpiarBtn" class="secondary">Limpiar</button>
+			</div>
+		</form>
+
+		<section id="lista" class="card">
+			<h2>Lista de observaciones</h2>
+			<div id="observacionesContainer" class="observaciones"></div>
+		</section>
+	</main>
+
+	<script src="script.js"></script>
+</body>
+</html>

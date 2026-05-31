@@ -97,6 +97,20 @@ async function actualizarTotalEstudiantes() {
 
 
 
+function actualizarTotalObservaciones() {
+    const contador = document.getElementById('observaciones-count');
+    if (!contador) return;
+
+    try {
+        const raw = localStorage.getItem('observaciones');
+        const observaciones = raw ? JSON.parse(raw) : [];
+        contador.textContent = Array.isArray(observaciones) ? observaciones.length : '0';
+    } catch (error) {
+        console.error('Error cargando total de observaciones:', error);
+        contador.textContent = '0';
+    }
+}
+
 //Funcion para actualizar en la tabla los profesores registrados
 async function cargarPersonal() {
     const tbody = document.getElementById('tabla-personal-body');
@@ -192,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tus funciones de estudiantes existentes
     cargarUltimosEstudiantes();
     actualizarTotalEstudiantes();
+    actualizarTotalObservaciones();
 
     // Nuevas funciones de personal
     cargarPersonal();
