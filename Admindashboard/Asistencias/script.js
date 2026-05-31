@@ -1,16 +1,17 @@
 let estudiantes = []; 
 
 async function cargarEstudiantesDesdeBD() {
+    const anoEscolar = document.getElementById('selectAnoEscolar').value;
     const grado = document.getElementById('selectGrado').value;
     const seccion = document.getElementById('selectSeccion').value;
     const fecha = document.getElementById('fechaAsistencia').value;
 
-    console.log("Cargando para:", { grado, seccion, fecha }); 
+    console.log("Cargando para:", { anoEscolar, grado, seccion, fecha }); 
 
-    if (!grado || !seccion || !fecha) return;
+    if (!anoEscolar || !grado || !seccion || !fecha) return;
 
     try {
-        const url = `http://localhost:3000/api/obtener-estudiantes?grado=${grado}&seccion=${seccion}&fecha=${fecha}`;
+        const url = `http://localhost:3000/api/obtener-estudiantes?ano_escolar=${encodeURIComponent(anoEscolar)}&grado=${encodeURIComponent(grado)}&seccion=${encodeURIComponent(seccion)}&fecha=${encodeURIComponent(fecha)}`;
         const respuesta = await fetch(url);
         const datos = await respuesta.json();
 
@@ -135,7 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (inputFecha) inputFecha.value = new Date().toISOString().split('T')[0];
 
-    [selectGrado, selectSeccion, inputFecha].forEach(el => {
+    const selectAnoEscolar = document.getElementById('selectAnoEscolar');
+    [selectAnoEscolar, selectGrado, selectSeccion, inputFecha].forEach(el => {
         if (el) el.addEventListener('change', cargarEstudiantesDesdeBD);
     });
 });

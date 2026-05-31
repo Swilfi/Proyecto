@@ -3,16 +3,19 @@ const API_BASE = 'http://localhost:3000/api';
 const registroData = {
     estudiante: {
         title: 'Registro: Estudiante',
-        headers: ['Cédula / Rep.', 'Nombre', 'Apellido', 'Fecha de Nac.', 'Dirección'],
+        headers: ['Cédula / Rep.', 'Nombre', 'Apellido', 'Fecha de Nac.', 'Dirección', 'Año Escolar', 'Grado', 'Sección'],
         fields: [
             { name: 'nombre', label: 'Nombre', type: 'text' },
             { name: 'apellido', label: 'Apellido', type: 'text' },
             { name: 'fecha_nacimiento', label: 'Fecha de Nacimiento', type: 'date' },
-            { name: 'direccion', label: 'Dirección', type: 'text' }
+            { name: 'direccion', label: 'Dirección', type: 'text' },
+            { name: 'ano_escolar', label: 'Año Escolar', type: 'text' },
+            { name: 'grado', label: 'Grado', type: 'select' },
+            { name: 'seccion', label: 'Sección', type: 'select' }
         ],
         rows: [
-            ['V12345678', 'Andrés', 'García', '2009-05-12', 'Av. Central 1'],
-            ['V98765432', 'María', 'López', '2010-08-21', 'Calle Falsa 123']
+            ['V12345678', 'Andrés', 'García', '2009-05-12', 'Av. Central 1', '2024-2025', '4°', 'B'],
+            ['V98765432', 'María', 'López', '2010-08-21', 'Calle Falsa 123', '2024-2025', '2°', 'A']
         ]
     },
     representante: {
@@ -50,6 +53,7 @@ const registroData = {
 
 const opcionesGrado = ['1°', '2°', '3°', '4°', '5°', '6°'];
 const opcionesSeccion = ['A', 'B', 'C'];
+const opcionesAno = ['2022-2023', '2023-2024', '2024-2025', '2025-2026'];
 
 // --- VALIDACIONES EN TIEMPO REAL ---
 document.addEventListener('input', (e) => {
@@ -151,13 +155,16 @@ async function fetchRegistroRows(type) {
         if (type === 'estudiante') {
             const response = await fetch(`${API_BASE}/estudiantes`);
             const estudiantes = await response.json();
-            return estudiantes.map(est => [
-                est.cedula_escolar || `Rep: ${est.cedula_rep || 'Sin representante'}`,
-                est.nombre,
-                est.apellido,
-                est.fecha_nacimiento || 'N/A',
-                est.direccion || 'N/A'
-            ]);
+                return estudiantes.map(est => [
+                    est.cedula_escolar || `Rep: ${est.cedula_rep || 'Sin representante'}`,
+                    est.nombre,
+                    est.apellido,
+                    est.fecha_nacimiento || 'N/A',
+                    est.direccion || 'N/A',
+                    est.ano_escolar || 'N/A',
+                    est.grado || 'N/A',
+                    est.seccion || 'N/A'
+                ]);
         }
 
         if (type === 'representante') {
@@ -215,8 +222,24 @@ function renderForm(type) {
                 <input id="cedula_representante" name="cedula_representante" type="text" placeholder="Ej: V87654321">
             </div>
             ${data.fields.map(field => {
-                const inputType = field.type === 'date' ? 'date' : 'text';
-                return `<div class="field"><label>${field.label}</label><input id="${field.name}" name="${field.name}" type="${inputType}" placeholder="Ingrese ${field.label.toLowerCase()}" required></div>`;
+                if (field.type === 'date') {
+                    return `<div class="field"><label>${field.label}</label><input id="${field.name}" name="${field.name}" type="date" placeholder="Ingrese ${field.label.toLowerCase()}" required></div>`;
+                }
+
+                if (field.type === 'select') {
+                    if (field.name === 'ano_escolar') {
+                        return `<div class="field"><label>${field.label}</label><select id="ano_escolar" name="ano_escolar" required><option value="" disabled selected>Seleccione</option>${opcionesAno.map(a => `<option value="${a}">${a}</option>`).join('')}</select></div>`;
+                    }
+                    if (field.name === 'grado') {
+                        return `<div class="field"><label>${field.label}</label><select id="grado" name="grado" required><option value="" disabled selected>Seleccione</option>${opcionesGrado.map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>`;
+                    }
+                    if (field.name === 'seccion') {
+                        return `<div class="field"><label>${field.label}</label><select id="seccion" name="seccion" required><option value="" disabled selected>Seleccione</option>${opcionesSeccion.map(s => `<option value="${s}">${s}</option>`).join('')}</select></div>`;
+                    }
+                }
+
+                // default to text
+                return `<div class="field"><label>${field.label}</label><input id="${field.name}" name="${field.name}" type="text" placeholder="Ingrese ${field.label.toLowerCase()}" required></div>`;
             }).join('')}
         `;
         setupCedulaToggleEvents();
@@ -268,15 +291,23 @@ async function selectPerson(type, button) {
 
 async function sendRegistration(endpoint, payload) {
     try {
+    console.log('Enviando payload a', endpoint, payload);
     const response = await fetch(`${API_BASE}/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     });
 
-    const result = await response.json();
+    const text = await response.text();
+    let result;
+    try {
+        result = text ? JSON.parse(text) : {};
+    } catch (e) {
+        result = { message: text };
+    }
+
     if (!response.ok) {
-        throw new Error(result.error || 'Error en el servidor');
+        throw new Error(result.error || result.message || 'Error en el servidor');
     }
 
     return result;
@@ -302,7 +333,10 @@ registroForm.addEventListener('submit', async event => {
         fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
         direccion: document.getElementById('direccion').value,
         cedula: estudianteConCedula ? document.getElementById('cedula').value : null,
-        cedula_representante: estudianteConCedula ? null : document.getElementById('cedula_representante').value
+        cedula_representante: estudianteConCedula ? null : document.getElementById('cedula_representante').value,
+        ano_escolar: document.getElementById('ano_escolar') ? document.getElementById('ano_escolar').value : '',
+        grado: document.getElementById('grado') ? document.getElementById('grado').value : '',
+        seccion: document.getElementById('seccion') ? document.getElementById('seccion').value : ''
         };
 
         values = [
@@ -312,6 +346,8 @@ registroForm.addEventListener('submit', async event => {
         payload.fecha_nacimiento,
         payload.direccion
         ];
+        // Añadir los nuevos campos a la vista de tabla
+        values.push(payload.ano_escolar || 'N/A', payload.grado || 'N/A', payload.seccion || 'N/A');
     } else if (currentType === 'representante') {
         endpoint = 'representantes';
         payload = {
