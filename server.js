@@ -66,7 +66,7 @@ app.get('/api/estudiantes/count', async (req, res) => {
 });
 
 app.post('/api/estudiantes', async (req, res) => {
-    const { nombre, apellido, fecha_nacimiento, cedula, direccion, cedula_representante } = req.body;
+    const { nombre, apellido, fecha_nacimiento, cedula, direccion, cedula_representante, ano_escolar, grado, seccion } = req.body;
     try {
         let idRepresentante = null;
         if (cedula_representante) {
@@ -75,8 +75,8 @@ app.post('/api/estudiantes', async (req, res) => {
             idRepresentante = rows[0].id;
         }
         const [result] = await pool.query(
-            'INSERT INTO estudiante (nombre, apellido, fecha_nacimiento, cedula_escolar, direccion, id_representante_principal) VALUES (?, ?, ?, ?, ?, ?)',
-            [nombre, apellido, fecha_nacimiento, cedula || null, direccion || null, idRepresentante]
+            'INSERT INTO estudiante (nombre, apellido, fecha_nacimiento, cedula_escolar, direccion, ano_escolar, grado, seccion, id_representante_principal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [nombre, apellido, fecha_nacimiento || null, cedula || null, direccion || null, ano_escolar || null, grado || null, seccion || null, idRepresentante]
         );
         res.status(201).json({ id: result.insertId, mensaje: 'Estudiante creado' });
     } catch (error) {
@@ -176,17 +176,14 @@ app.post('/api/profesores', async (req, res) => {
 // ==========================================
 
 app.get('/api/obtener-estudiantes', async (req, res) => {
-    const { grado, seccion, fecha } = req.query;
+    const { ano_escolar, grado, seccion, fecha } = req.query;
 
     if (!grado || !seccion || !fecha) {
         return res.status(400).json({ error: 'Faltan parámetros' });
     }
 
     try {
-        // Esta consulta usa los nombres exactos de tus imágenes: 
-        // Tabla: estudiante (columnas: grado, seccion)
-        // Tabla: asistencias (columnas: id_estudiante, fecha, estado)
-        const query = `
+        const baseQuery = `
             SELECT 
                 e.id, 
                 e.nombre, 
@@ -197,15 +194,23 @@ app.get('/api/obtener-estudiantes', async (req, res) => {
                 (SELECT COUNT(*) FROM asistencias WHERE id_estudiante = e.id AND estado = 'Inasistente') AS total_inasistencias,
                 (SELECT estado FROM asistencias WHERE id_estudiante = e.id AND fecha = ?) AS estado_hoy
             FROM estudiante e
-            WHERE e.grado = ? AND e.seccion = ?
+            WHERE 1 = 1
+              AND TRIM(LOWER(REPLACE(REPLACE(REPLACE(e.grado, ' ', ''), '°', ''), 'º', ''))) = TRIM(LOWER(REPLACE(REPLACE(REPLACE(?, ' ', ''), '°', ''), 'º', '')))
+              AND TRIM(LOWER(e.seccion)) = TRIM(LOWER(?))
         `;
-        
-        const [rows] = await pool.query(query, [fecha, grado, seccion]);
+
+        let query = baseQuery;
+        const params = [fecha, grado, seccion];
+
+        if (ano_escolar) {
+            query = query.replace('WHERE 1 = 1', `WHERE 1 = 1\n              AND (e.ano_escolar IS NULL OR e.ano_escolar = '' OR TRIM(LOWER(REPLACE(REPLACE(REPLACE(REPLACE(e.ano_escolar, ' ', ''), '-', ''), '/', ''), '.', ''))) = TRIM(LOWER(REPLACE(REPLACE(REPLACE(REPLACE(?, ' ', ''), '-', ''), '/', ''), '.', ''))))`);
+            params.splice(1, 0, ano_escolar);
+        }
+
+        const [rows] = await pool.query(query, params);
         res.json(rows);
     } catch (error) {
-        // ESTO ES CLAVE: Mira tu terminal negra de Node cuando dé error, 
-        // ahí te dirá exactamente qué palabra no entiende MySQL.
-        console.error("DETALLE DEL ERROR SQL:", error); 
+        console.error("DETALLE DEL ERROR SQL:", error);
         res.status(500).json({ error: 'Error al consultar la base de datos', detalle: error.message });
     }
 });
